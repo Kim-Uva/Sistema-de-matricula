@@ -1,3 +1,4 @@
+---Comandos para este proyecto---
 Node modules:
 Server
 npm install typescript ts-node @types/node prisma
