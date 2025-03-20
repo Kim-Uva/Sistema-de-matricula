@@ -1,0 +1,178 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  //shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Perfil {
+  idUsuario      Int         @id @default(autoincrement())
+  identificacion String
+  nombre         String
+  apellido1      String
+  apellido2      String
+  telefono       String
+  correo         String      @unique
+  estado         Estado?
+  direccion      Direccion[]
+  tipoUsuario    TipoUsuario
+  docente        Docente?
+  estudiante     Estudiante?
+  auditoria      Auditoria[]
+}
+
+//Docente: son las personas encargadas de impartir los cursos.
+model Docente {
+  idDocente Int     @id @default(autoincrement())
+  idPerfil  Int     @unique
+  perfil    Perfil  @relation(fields: [idPerfil], references: [idUsuario])
+  curso     Curso[]
+}
+
+//Estudiantes: son las personas que reciben un curso en el que previamente se matricularon.
+model Estudiante {
+  idEstudiante       Int                  @id @default(autoincrement())
+  idPerfil           Int                  @unique
+  perfil             Perfil               @relation(fields: [idPerfil], references: [idUsuario])
+  historialAcademico HistorialAcademico[]
+}
+
+//Materias: son los nombres de los elementos que componen un plan de estudios
+model Materias {
+  idMateria    Int           @id @default(autoincrement())
+  idPlan       Int?
+  descripcion  String
+  estado       Estado
+  planEstudios PlanEstudios? @relation(fields: [idPlan], references: [idPlan])
+  curso        Curso[]
+}
+
+//Plan de estudios: son la agrupación ordenada de materias.
+model PlanEstudios {
+  idPlan               Int                    @id @default(autoincrement())
+  descripcion          String
+  estado               Estado
+  ofertaAcademicaGrupo OfertaAcademicaGrupo[] // Relación con OfertaAcademicaGrupo
+  materias             Materias[] // Relación con varios planes de estudio
+}
+
+//Cursos: es la oferta de una materia, es decir, la publicación de una materia, con su respectivo
+//docente, horario y aula.
+model Curso {
+  idCurso   Int       @id @default(autoincrement())
+  idMateria Int
+  idDocente Int
+  aula      String
+  estado    Estado
+  materia   Materias  @relation(fields: [idMateria], references: [idMateria])
+  docente   Docente   @relation(fields: [idDocente], references: [idDocente])
+  horario   Horario[] @relation("HorarioCurso")
+}
+
+model Horario {
+  idHorario  Int    @id @default(autoincrement())
+  idCurso    Int
+  diaSemana  String
+  horaInicio String
+  horaFin    String
+  estado     Estado
+  curso      Curso  @relation("HorarioCurso", fields: [idCurso], references: [idCurso])
+}
+
+model OfertaAcademica {
+  idOfertaAcademica  Int                    @id @default(autoincrement())
+  descripcionPeriodo String
+  grupos             OfertaAcademicaGrupo[]
+}
+
+//Oferta académica: es el conjunto de cursos ofrecidos en un periodo determinado
+model OfertaAcademicaGrupo {
+  idOfertaAcademica Int
+  idPlanEstudios    Int
+  ofertaAcademica   OfertaAcademica @relation(fields: [idOfertaAcademica], references: [idOfertaAcademica])
+  planEstudio       PlanEstudios    @relation(fields: [idPlanEstudios], references: [idPlan])
+
+  @@id([idOfertaAcademica, idPlanEstudios]) // Clave compuesta
+}
+
+//Histórico académico: es el registro histórico de los cursos matriculados por las personas
+//estudiantes y el registro de la nota obtenida
+model HistorialAcademico {
+  idHistorialAcademico Int        @id @default(autoincrement())
+  idEstudiante         Int
+  idMateria            Int
+  notaFinal            Float
+  estudiante           Estudiante @relation(fields: [idEstudiante], references: [idEstudiante])
+}
+
+//Auditoría: módulo de control que rastrea y registra todas las acciones realizadas dentro de la
+//aplicación, asegurando la transparencia y seguridad de los datos.
+model Auditoria {
+  idAuditoria   Int      @id @default(autoincrement())
+  idPerfil      Int      @map("idUsuario")
+  accion        Accion
+  tablaAfectada String
+  fecha         DateTime @default(now())
+  perfil        Perfil   @relation(fields: [idPerfil], references: [idUsuario])
+}
+
+//Direcciones
+model Direccion {
+  idDireccion     Int       @id @default(autoincrement())
+  idPerfil        Int
+  idDistrito      Int
+  direccionExacta String
+  perfil          Perfil    @relation(fields: [idPerfil], references: [idUsuario])
+  distrito        Distritos @relation(fields: [idDistrito], references: [DistritoId])
+}
+
+model Provincias {
+  ProvinciaId Int        @id @default(autoincrement())
+  Provincia   String
+  Cantones    Cantones[] //relacion De cantones
+}
+
+model Cantones {
+  CantonId    Int         @id @default(autoincrement()) //Consecutivo
+  Canton      String
+  Provincias  Provincias  @relation(fields: [ProvinciaId], references: [ProvinciaId]) //Llave foranea
+  ProvinciaId Int
+  Distritos   Distritos[]
+}
+
+model Distritos {
+  DistritoId  Int         @id @default(autoincrement())
+  Distrito    String
+  Cantones    Cantones    @relation(fields: [CantonId], references: [CantonId])
+  CantonId    Int
+  Direcciones Direccion[] // Relación opuesta
+}
+
+//Enums
+enum Estado {
+  Activo
+  Inactivo
+}
+
+enum Accion {
+  Creacion
+  Actualizacion
+  Eliminacion
+  Login
+  Logout
+}
+
+enum TipoUsuario {
+  Estudiante
+  Docente
+  Usuario
+}

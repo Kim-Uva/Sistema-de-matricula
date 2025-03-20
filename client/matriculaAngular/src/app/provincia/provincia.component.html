@@ -1,0 +1,21 @@
+<mat-list>
+    @for (Provincia of Provincias(); track Provincia.ProvinciaId) {
+      <mat-list-item>
+        <span>{{ Provincia.ProvinciaId }} - {{ Provincia.Provincia }}</span>
+        
+        <input 
+          type="text"
+          (keydown.enter)="modificarProvinvia(Provincia.ProvinciaId, $event)"
+          [value]="Provincia.Provincia"
+        />
+         <button mat-button color="warn" (click)="borrarProvinvia(Provincia.ProvinciaId)">Borrar</button>
+     
+        </mat-list-item>
+    } @empty {
+      <mat-list-item>Nada que mostrar.</mat-list-item>
+    }
+    <mat-list-item>
+      <input placeholder="Agregar" type="text" (keydown.enter)="agregarProvinvia($event)" />
+    </mat-list-item>
+  </mat-list>
+  

@@ -1,0 +1,50 @@
+<table mat-table [dataSource]="usuarios()" class="mat-elevation-z8">
+    <!-- Columna ID -->
+    <ng-container matColumnDef="idUsuario">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let usuario"> {{ usuario.idUsuario }} </td>
+    </ng-container>
+  
+    <!-- Columna Nombre -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let usuario"> {{ usuario.nombre }} </td>
+    </ng-container>
+  
+    <!-- Columna Apellido 1 -->
+    <ng-container matColumnDef="apellido1">
+      <th mat-header-cell *matHeaderCellDef> Apellido 1 </th>
+      <td mat-cell *matCellDef="let usuario"> {{ usuario.apellido1 }} </td>
+    </ng-container>
+  
+    <!-- Columna Apellido 2 -->
+    <ng-container matColumnDef="apellido2">
+      <th mat-header-cell *matHeaderCellDef> Apellido 2 </th>
+      <td mat-cell *matCellDef="let usuario"> {{ usuario.apellido2 }} </td>
+    </ng-container>
+    <!-- Columna Correo -->
+    <ng-container matColumnDef="correo">
+      <th mat-header-cell *matHeaderCellDef> Correo </th>
+      <td mat-cell *matCellDef="let usuario"> {{ usuario.correo }} </td>
+    </ng-container>
+    
+    <!-- Columna Tipo de Usuario -->
+    <ng-container matColumnDef="tipoUsuario">
+      <th mat-header-cell *matHeaderCellDef> Tipo de Usuario </th>
+      <td mat-cell *matCellDef="let usuario"> {{ usuario.tipoUsuario }} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acción </th>
+      <td mat-cell *matCellDef="let usuario">
+        <button mat-icon-button (click)="editarPerfil(usuario.idUsuario)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+  
+    <!-- Header y filas -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
