@@ -1,0 +1,30 @@
+Autenticacion: 
+Usuario y contraseña validandolo en base de datos
+
+Autorizacion: 
+Permisos que retorna un token (Código unico) jwt.io
+
+
+jwt.io = json 
+
+- Paso 1:
+    Para eso debe existir un endpoint para autenticar con el usuario y contraseña como parametro
+
+- Paso 2:
+    Todo endpoint debe ser autorizado
+
+- Paso 3:
+    Usuario y contraseña se valida en base de datos y los permisos retorna un token
+
+- Paso 4:
+    El token generado se va al endpoint para ser autorizado
+    la linea de autorizaccion debe estar en todos los endpoints del Rest
+
+
+En las rutas procede la autorización (token)
+
+
+jwt.sign Parametros: 
+- objeto json llamado con data. Ejemplo ({data: Usuario.correo})
+- palabra secreta para encriptar el token
+- parametro de expiración. Ejemplo {expiresIn: '1m'}
