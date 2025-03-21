@@ -22,6 +22,7 @@ model Perfil {
   apellido2      String
   telefono       String
   correo         String      @unique
+  clave          String? //nullable por el momento
   estado         Estado?
   direccion      Direccion[]
   tipoUsuario    TipoUsuario

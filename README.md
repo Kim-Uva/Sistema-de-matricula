@@ -23,3 +23,9 @@ ng serve
 Crear componentes en angular:
 ng generate component "Nombre del componente"
 
+Para el json web token:
+npm install jsonwebtoken
+
+Para el bycript y cripto que gestiona la encriptacion en clases:
+npm install bcrypt
+npm install cripto

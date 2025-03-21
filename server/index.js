@@ -9,6 +9,11 @@ const express = require('express');
 const cors = require('cors');
 const logger = require('morgan');
 const app = express();
+const bycript = require('bcrypt');
+
+bycript.hash('123456', 10, function(err, hash){
+  console.log(hash);
+});
 
 //---Archivos de rutas---
 const provinciaRoute = require("./routes/provinciaRoute.js");
@@ -19,7 +24,7 @@ const ofertaRoute = require("./routes/ofertaRoute.js");
 const cursoRoute = require("./routes/cursoRoute.js");
 const grupoRoute = require("./routes/ofertaGrupoRoute.js");
 const historialRoute = require("./routes/historialRoute.js");
-
+const usuarioLogin = require("./routes/loginRoute.js");
 
 // Acceder a la configuracion del archivo .env
 dotEnv.config();
@@ -41,6 +46,7 @@ app.use(
 //---- Definir rutas recordar actualizar ----
 app.use('/provincias/', provinciaRoute)
 app.use('/usuario/', usuarioRoute)
+app.use('/usuariologin/', usuarioLogin)
 app.use('/plan/', planRoute)
 app.use('/materia/', materiaRoute)
 app.use('/oferta/', ofertaRoute)

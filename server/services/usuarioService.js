@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-
+const bcrypt = require ('bcrypt');
 const prisma = new PrismaClient();
 
 //Usuarios
@@ -62,9 +62,13 @@ module.exports.createUsuario = async (request, response, next) => {
       apellido1,
       apellido2,
       correo,
+      clave,
+      estado,
       telefono,
       tipoUsuario,
     } = request.body;
+
+    const hash = await bcrypt.hash(clave, 10);
 
     // Verificar que el correo no esté registrado por ser único
     const existeUsuario = await prisma.perfil.findUnique({
@@ -85,11 +89,14 @@ module.exports.createUsuario = async (request, response, next) => {
         apellido1: apellido1,
         apellido2: apellido2,
         correo: correo,
+        clave: hash,
+        estado: estado,
         telefono: telefono,
         tipoUsuario: tipoUsuario,
       },
     });
 
+    
     if (tipoUsuario === "Docente") {
       await prisma.docente.create({
         data: {
@@ -124,7 +131,7 @@ module.exports.createUsuario = async (request, response, next) => {
       .json({ message: "Usuario creado con éxito", perfil });
   } catch (error) {
     console.error(
-      "No se pudo insertar el perfil con la identificacion ${identificacion} debido al error: ${error}"
+      error
     );
   }
 };
