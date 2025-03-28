@@ -9,4 +9,7 @@ router.post('/', ServicioMateria.createMateria);
 router.put('/:id', ServicioMateria.updateMateria);
 router.delete('/:id', ServicioMateria.deleteMateria);
 
+
+//Obtener materia por id
+router.get('/:id', ServicioMateria.getMateriaById);
 module.exports = router;
