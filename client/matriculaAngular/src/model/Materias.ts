@@ -8,5 +8,5 @@ export interface Materia {
     descripcion: string;
     estado: Estado;
     planEstudios?: PlanEstudios;  // Relación con PlanEstudios, opcional
-    curso: Curso[];  // Relación con varios cursos
+    //curso: Curso[];  // Relación con varios cursos
   }

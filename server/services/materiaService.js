@@ -37,6 +37,27 @@ module.exports.createMateria = async (request, response, next) => {
   }
 };
 
+//Obtener materia por id
+module.exports.getMateriaById = async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const materia = await prisma.materias.findUnique({
+      where: {
+        idMateria: parseInt(id)
+      }
+    });
+
+    if (!materia) {
+      return response.status(404).json({ message: 'Materia no encontrada' });
+    }
+
+    response.json(materia);
+  } catch (error) {
+    console.error('Error al obtener materia por id:', error);
+    response.status(500).json({ error: 'Error interno al obtener la materia' });
+  }
+};
+
 //Actualizar materia
 module.exports.updateMateria = async (request, response, next) => {
   try {
