@@ -3,11 +3,15 @@ import { FormsModule } from '@angular/forms';
 import { Perfil } from '../../../model/Perfil';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-usuarios-edit',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatCardModule],
   templateUrl: './usuarios-edit.component.html',
   styleUrl: './usuarios-edit.component.css'
 })

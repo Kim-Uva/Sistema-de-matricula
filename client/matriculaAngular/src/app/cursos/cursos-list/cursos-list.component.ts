@@ -29,6 +29,8 @@ export class CursosListComponent {
   //obtener los cursos nombres delos docentes y materias
   public metodoGetcurso() {
     this.http.get<Curso[]>('http://localhost:3000/curso/').subscribe((cursos) => {
+      console.log('Cursos obtenidos:', cursos); // Verifica la estructura real
+
       this.cursos.set(cursos); 
       this.dataSource.data = cursos; 
     });
