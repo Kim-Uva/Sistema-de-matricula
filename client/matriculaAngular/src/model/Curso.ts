@@ -9,7 +9,7 @@ export interface Curso {
     idDocente: number;
     aula: string;
     estado: Estado;
-    materia: Materia;  // Relación con Materias
-    docente: Docente;   // Relación con Docente
-    horario: Horario[]; // Relación con Horario, es un arreglo de objetos Horario
+    materia?: Materia;  // Relación con Materias
+    docente?: Docente;   // Relación con Docente
+    horario?: Horario[]; // Relación con Horario, es un arreglo de objetos Horario
   }

@@ -1,1 +1,150 @@
-<p>cursos-edit works!</p>
+<div class="container">
+  <h2 class="mat-headline">Editar Curso</h2>
+
+  <form>
+    <div class="row">
+      <!-- Selección de materia -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Materia</mat-label>
+          <mat-select [(ngModel)]="curso.idMateria" name="materia">
+            <mat-option *ngFor="let materia of materias" [value]="materia.idMateria">
+              {{ materia.descripcion }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Selección de docente -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Docente</mat-label>
+          <mat-select [(ngModel)]="curso.idDocente" name="docente">
+            <mat-option *ngFor="let docente of docentes" [value]="docente.idDocente">
+              {{ docente.perfil?.nombre }} {{ docente.perfil?.apellido1 }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Aula -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Aula</mat-label>
+          <input matInput type="text" [(ngModel)]="curso.aula" name="aula">
+        </mat-form-field>
+      </div>
+
+      <!-- Estado del curso -->
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Estado</mat-label>
+          <mat-select [(ngModel)]="curso.estado" name="estado">
+            <mat-option value="Activo">Activo</mat-option>
+            <mat-option value="Inactivo">Inactivo</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Tabla de Horarios -->
+    <h4>Horarios</h4>
+    <table mat-table [dataSource]="curso.horario || []" class="mat-elevation-z8 full-width">
+      <ng-container matColumnDef="dia">
+        <th mat-header-cell *matHeaderCellDef>Día</th>
+        <td mat-cell *matCellDef="let horario">{{ horario.diaSemana }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="inicio">
+        <th mat-header-cell *matHeaderCellDef>Hora Inicio</th>
+        <td mat-cell *matCellDef="let horario">{{ horario.horaInicio }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="fin">
+        <th mat-header-cell *matHeaderCellDef>Hora Fin</th>
+        <td mat-cell *matCellDef="let horario">{{ horario.horaFin }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let horario">
+          <mat-chip [color]="horario.estado === 'Activo' ? 'primary' : 'warn'">
+            {{ horario.estado }}
+          </mat-chip>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let horario; let i = index">
+          <!-- <button mat-icon-button color="warn" (click)="eliminarHorario(i)">
+            <mat-icon>delete</mat-icon>
+          </button> -->
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['dia', 'inicio', 'fin', 'estado', 'acciones']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['dia', 'inicio', 'fin', 'estado', 'acciones'];"></tr>
+    </table>
+
+    <button mat-raised-button color="primary" (click)="showHorarioForm = true">
+      <mat-icon>add</mat-icon> Agregar Horario
+    </button>
+
+    <div class="text-right mt-4">
+      <button mat-raised-button color="accent" (click)="editarCurso()">
+        <mat-icon>save</mat-icon> Guardar Cambios
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Formulario de Nuevo Horario -->
+<div *ngIf="showHorarioForm" class="mt-4">
+  <h4>Agregar Nuevo Horario</h4>
+  <div class="row">
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Día de la Semana</mat-label>
+        <mat-select [(ngModel)]="nuevoHorario.diaSemana" name="diaSemana">
+          <mat-option *ngFor="let dia of ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']" [value]="dia">
+            {{ dia }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-3">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Hora de Inicio</mat-label>
+        <input matInput type="time" [(ngModel)]="nuevoHorario.horaInicio" name="horaInicio">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-3">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Hora de Fin</mat-label>
+        <input matInput type="time" [(ngModel)]="nuevoHorario.horaFin" name="horaFin">
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Estado</mat-label>
+        <mat-select [(ngModel)]="nuevoHorario.estado" name="estadoHorario">
+          <mat-option value="Activo">Activo</mat-option>
+          <mat-option value="Inactivo">Inactivo</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="text-right">
+    <button mat-raised-button color="success" (click)="guardarNuevoHorario()">
+      <mat-icon>check</mat-icon> Guardar
+    </button>
+    <button mat-raised-button color="warn" (click)="showHorarioForm = false">
+      <mat-icon>close</mat-icon> Cancelar
+    </button>
+  </div>
+</div>

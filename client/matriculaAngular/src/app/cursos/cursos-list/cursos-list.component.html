@@ -15,10 +15,10 @@
     <ng-container matColumnDef="docente">
         <th mat-header-cell *matHeaderCellDef> Docente </th>
         <td mat-cell *matCellDef="let curso">
-            {{ curso.docente?.perfil?.nombre || 'No disponible' }}
-          </td>    
-        </ng-container>
-    
+          {{ curso.docente?.perfil?.nombre || 'No disponible' }} {{ curso.docente?.perfil?.apellido1 || '' }} {{ curso.docente?.perfil?.apellido2 || '' }}
+        </td>
+      </ng-container>
+      
     <!-- Columna Estado -->
     <ng-container matColumnDef="estado">
         <th mat-header-cell *matHeaderCellDef> Estado </th>

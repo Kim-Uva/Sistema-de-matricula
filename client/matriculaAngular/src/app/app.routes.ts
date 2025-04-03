@@ -7,6 +7,7 @@ import { CursosListComponent } from './cursos/cursos-list/cursos-list.component'
 import { MateriasListComponent } from './materia/materias-list/materias-list.component';
 import { HistorialListComponent } from './historial/historial-list/historial-list.component';
 import { MateriasEditComponent } from './materia/materias-edit/materias-edit.component';
+import { CursosEditComponent } from './cursos/cursos-edit/cursos-edit.component';
 
 export const routes: Routes = [
   { path: 'provincias', component: ProvinciaComponent }, // Add the component to the routes
@@ -20,7 +21,7 @@ export const routes: Routes = [
 
   //Cursos
   { path: 'cursos', component: CursosListComponent },
-  {path: 'cursos/edit/:id', component: CursosListComponent},
+  {path: 'cursos/edit/:id', component: CursosEditComponent},
 
 
   //materias

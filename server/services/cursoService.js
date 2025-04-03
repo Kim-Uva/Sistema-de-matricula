@@ -8,7 +8,11 @@ module.exports.getCursos = async (request, response, next) => {
     const curso = await prisma.curso.findMany({
       include: {
         materia: true,
-        docente: true,
+        docente: {
+          include: {
+            perfil: true,
+        },
+      },
         horario: true,
       },
     });
@@ -169,3 +173,4 @@ module.exports.getCursoById = async (request, response, next) => {
     response.status(500).json({ error: "Error interno al obtener el curso" });
   }
 };
+

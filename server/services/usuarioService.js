@@ -235,3 +235,78 @@ module.exports.deleteUsuario = async (request, response, next) => {
       .json({ error: "Error interno al eliminar el usuario" });
   }
 };
+
+
+//Get usuarios by tipoUsuario
+module.exports.getUsuariosByTipo = async (request, response, next) => {
+  const tipoUsuario = request.params.tipoUsuario;
+  try {
+    const perfil = await prisma.perfil.findMany({
+      where: {
+        tipoUsuario: tipoUsuario,
+      },
+    });
+
+    if (!perfil) {
+      return response
+        .status(404)
+        .json({ message: "No se encontraron usuarios" });
+    }
+
+    response.json(perfil);
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    response
+      .status(500)
+      .json({ error: "Error interno al obtener los usuarios" });
+  }
+};
+
+
+// Get Docentes
+module.exports.getDocentes = async (request, response, next) => {
+  try {
+    const perfil = await prisma.docente.findMany({
+      include: {
+        perfil: true,
+      },
+    });
+
+    if (!perfil) {
+      return response
+        .status(404)
+        .json({ message: "No se encontraron docentes" });
+    }
+
+    response.json(perfil);
+  } catch (error) {
+    console.error("Error al obtener docentes:", error);
+    response.status(500).json({ error: "Error interno al obtener los docentes" });
+  }
+};
+
+// Get Docente by id
+module.exports.getDocenteById = async (request, response, next) => {
+  let idUsuario = parseInt(request.params.id);
+  try {
+    const perfil = await prisma.docente.findUnique({
+      where: {
+        idPerfil: idUsuario,
+      },
+      include: {
+        perfil: true,
+      },
+    });
+
+    if (!perfil) {
+      return response
+        .status(404)
+        .json({ message: "No se encontró el docente" });
+    }
+
+    response.json(perfil);
+  } catch (error) {
+    console.error("Error al obtener docente:", error);
+    response.status(500).json({ error: "Error interno al obtener el docente" });
+  }
+};
