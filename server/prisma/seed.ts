@@ -6,16 +6,26 @@ import { planEstudios } from "./seeds/planEstudios";
 import { materias } from "./seeds/materias";
 import { perfil } from "./seeds/usuarios";
 import { ofertas  } from "./seeds/ofertas";
+const bcrypt = require ('bcrypt');
+
 
 
 const prisma = new PrismaClient({ log: ["query"] });
 
 async function main() {
   // Usuarios
-
-  await prisma.perfil.createMany({
-    data: perfil,
-  });
+  const clavesPorTipo = {
+    Docente: "Docente123",
+    Estudiante: "Estudiante123",
+    Usuario: "Admin123",
+  };
+  const perfilesConClave = await Promise.all(
+    perfil.map(async (p) => ({
+      ...p,
+      clave: await bcrypt.hash(clavesPorTipo[p.tipoUsuario] || "Usuario123", 10),
+    }))
+  );
+  await prisma.perfil.createMany({ data: perfilesConClave });
 
   for (const listaPerfil of perfil) {
     const existePerfil = await prisma.perfil.findUnique({

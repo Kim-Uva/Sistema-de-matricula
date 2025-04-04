@@ -1,8 +1,8 @@
 import { Estado, TipoUsuario } from "@prisma/client";
 export const perfil = [
     //Usuarios
-    { identificacion: "1056789012", nombre: "Ana", apellido1: "Rodríguez", apellido2: "Vázquez", telefono: "81012345", correo: "ana.rodriguez@educaciononline.net", clave: "123456", estado: Estado.Activo, tipoUsuario: TipoUsuario.Usuario },
-    { identificacion: "1067890123", nombre: "José", apellido1: "Martínez", apellido2: "García", telefono: "81987654", correo: "jose.martinez@educaciononline.net",clave: "246802", estado: Estado.Activo, tipoUsuario: TipoUsuario.Usuario },
+    { identificacion: "1056789012", nombre: "Ana", apellido1: "Rodríguez", apellido2: "Vázquez", telefono: "81012345", correo: "ana.rodriguez@educaciononline.net", estado: Estado.Activo, tipoUsuario: TipoUsuario.Usuario },
+    { identificacion: "1067890123", nombre: "José", apellido1: "Martínez", apellido2: "García", telefono: "81987654", correo: "jose.martinez@educaciononline.net", estado: Estado.Activo, tipoUsuario: TipoUsuario.Usuario },
     { identificacion: "1078901234", nombre: "Marta", apellido1: "Sánchez", apellido2: "Hernández", telefono: "81876543", correo: "marta.sanchez@educaciononline.net", estado: Estado.Activo, tipoUsuario: TipoUsuario.Usuario },
     { identificacion: "1089012345", nombre: "Ricardo", apellido1: "Torres", apellido2: "Ramírez", telefono: "81765432", correo: "ricardo.torres@educaciononline.net", estado: Estado.Activo, tipoUsuario: TipoUsuario.Usuario },
     { identificacion: "1090123456", nombre: "Patricia", apellido1: "Pérez", apellido2: "Díaz", telefono: "81654321", correo: "patricia.perez@educaciononline.net", estado: Estado.Activo, tipoUsuario: TipoUsuario.Usuario },

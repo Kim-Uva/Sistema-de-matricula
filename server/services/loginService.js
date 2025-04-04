@@ -3,6 +3,7 @@ const { PrismaClient } = require("@prisma/client")
 const bcrypt = require ('bcrypt');
 const crypto = require ('crypto');
 const jwt = require('jsonwebtoken');
+
 const prisma = new PrismaClient();
 
 class servicioUsuarioLogin {
@@ -11,28 +12,29 @@ class servicioUsuarioLogin {
 
     PalabraSecreta = "MiPalabraSecreta";
 
-    async Autenticacion(CorreoElectronico, ClaveSinEncriptar) {
-        //Buscar el usuario en la base de datos
-        let Usuario = await prisma.perfil.findFirst({
-            where: {
-              correo: CorreoElectronico,
-            },
-            select: {
-              tipoUsuario: true,
-              clave: true,
-            }
+    async Autenticacion(correo, ClaveSinEncriptar) {
+      try {
+          const usuario = await prisma.perfil.findUnique({
+              where: { correo : correo }
           });
+    
+          if (!usuario) throw new Error("Usuario no encontrado");
+    
+          const resultado = await bcrypt.compare(ClaveSinEncriptar, usuario.clave);
+          if (!resultado) throw new Error("Contraseña incorrecta");
+    
 
-          // Comparar la clave encriptada con la clave sin encriptar
-          let Resultado = await bcrypt.compare(ClaveSinEncriptar, Usuario.clave);
-          if (Resultado === true) {
-            return jwt.sign({ data: Usuario.clave }, this.PalabraSecreta, { expiresIn: '1m' });
-          } else {
-            return false;
-          }
-        };
-
-
+          console.log("Clave ingresada:", ClaveSinEncriptar);
+          console.log("Clave en BD:", usuario.clave);
+    
+          return jwt.sign({ data: usuario.tipoUsuario }, this.PalabraSecreta, { expiresIn: '1h' });
+    
+      } catch (error) {
+          console.error(`Error en autenticación: ${error.message}`);
+          return null;
+      }
+    }
+ 
         //Validar el token
         async ValidarToken(solicitud) {
             let Resultado;
@@ -45,7 +47,7 @@ class servicioUsuarioLogin {
           };
         }
         module.exports = servicioUsuarioLogin;
-
+ 
         
     
 

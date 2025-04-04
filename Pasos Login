@@ -28,3 +28,22 @@ jwt.sign Parametros:
 - objeto json llamado con data. Ejemplo ({data: Usuario.correo})
 - palabra secreta para encriptar el token
 - parametro de expiración. Ejemplo {expiresIn: '1m'}
+
+
+
+
+
+Injecion de codigo 
+Declaro e instancio uba clase
+
+HttpClient
+-import Router
+
+constructor
+
+if !true:
+this.router.navigate(['']);
+
+}
+
+this.metodogetProvincia();
