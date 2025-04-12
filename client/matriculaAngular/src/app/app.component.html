@@ -1,12 +1,12 @@
-<nav class="navbar">
+<nav class="navbar" *ngIf="!isLoginPage">
   <ul class="navbar-list">
-    <li class="navbar-item"><a href="/provincias" class="navbar-link">Provincias</a></li>
-    <li class="navbar-item"><a href="/usuarios" class="navbar-link">Usuarios</a></li>
-    <li class="navbar-item"><a href="/cursos" class="navbar-link">Cursos</a></li>
-    <li class="navbar-item"><a href="/materias" class="navbar-link">Materias</a></li>
-    <li class="navbar-item"><a href="/historial" class="navbar-link">Historial</a></li>
-
-<  </ul>
+    <li class="navbar-item"><a [routerLink]="['/provincias']" class="navbar-link">Provincias</a></li>
+    <li class="navbar-item"><a [routerLink]="['/usuarios']" class="navbar-link">Usuarios</a></li>
+    <li class="navbar-item"><a [routerLink]="['/cursos']" class="navbar-link">Cursos</a></li>
+    <li class="navbar-item"><a [routerLink]="['/materias']" class="navbar-link">Materias</a></li>
+    <li class="navbar-item"><a [routerLink]="['/historial']" class="navbar-link">Historial</a></li>
+  </ul>
 </nav>
+
 
 <router-outlet></router-outlet>

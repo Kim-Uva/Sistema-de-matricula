@@ -172,5 +172,36 @@ module.exports.getCursoById = async (request, response, next) => {
     console.error("Error al obtener curso:", error);
     response.status(500).json({ error: "Error interno al obtener el curso" });
   }
+
+  
 };
 
+//get Curso por materia 
+module.exports.getCursoByMateria = async (request, response, next) => {
+  try {
+    const { idMateria } = request.params;
+    const curso = await prisma.curso.findMany({
+      where: {
+        idMateria: parseInt(idMateria),
+      },
+      include: {
+        materia: true,
+        docente: {
+          include: {
+            perfil: true,
+          },
+        },
+        horario: true,
+      },
+    });
+
+    if (!curso) {
+      return response.status(404).json({ message: "No se encontró el curso" });
+    }
+
+    response.json(curso);
+  } catch (error) {
+    console.error("Error al obtener curso:", error);
+    response.status(500).json({ error: "Error interno al obtener el curso" });
+  }
+}

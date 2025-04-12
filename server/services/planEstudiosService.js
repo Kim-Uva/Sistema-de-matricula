@@ -2,11 +2,14 @@ const { PrismaClient } = require("@prisma/client")
 
 const prisma = new PrismaClient();
 
-//Plan de estudios
+//Planes de estudios
 module.exports.getPlanes = async (request, response, next) => {
   try {
-    const plan = await prisma.planEstudios.findMany();
-
+    const plan = await prisma.planEstudios.findMany({
+      include: {
+        materias: true,  // Incluir materias asociadas al Plan de Estudios
+      }
+    });
     if (plan.length === 0) {
       return response.status(404).json({ message: 'No se encontraron planes de estudio' });
     }
@@ -17,7 +20,6 @@ module.exports.getPlanes = async (request, response, next) => {
     response.status(500).json({ error: 'Error interno al obtener los planes de estudio' });
   }
 };
-
 //Obtener plan por id
 module.exports.getPlanById = async (request, response, next) => {
   let idPlan = parseInt(request.params.id);

@@ -97,28 +97,28 @@ async function main() {
     });
   }
   
-  // Plan de estudios
   for (const listaPlan of planEstudios) {
     // Crear el Plan de Estudios
     const createdPlan = await prisma.planEstudios.create({
       data: {
         descripcion: listaPlan.descripcion,
         estado: listaPlan.estado,
+        materias: {
+          connect: listaPlan.materias.map(idMateria => ({ idMateria }))
+        },
       },
     });
-
-    // Actualizar las materias asociadas al Plan de Estudios
-    for (const materia of listaPlan.materias) {
-      await prisma.materias.update({
-        where: {
-          idMateria: materia,
-        },
-        data: {
-          idPlan: createdPlan.idPlan, // idPlan generado
-        },
-      });
-    }
-
+  
+    // Asociar materias a ese plan
+    await prisma.materias.updateMany({
+      where: {
+        idMateria: { in: listaPlan.materias },
+      },
+      data: {
+        idPlan: createdPlan.idPlan,
+      },
+    });
+  
     console.log(`Plan de estudio creado: ${createdPlan.descripcion}`);
   }
 
@@ -151,6 +151,9 @@ async function main() {
   }
 }
 
+//Historial
+
+
 main()
   .then(async () => {
     await prisma.$disconnect();
@@ -160,3 +163,5 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
+
+  

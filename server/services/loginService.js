@@ -27,7 +27,7 @@ class servicioUsuarioLogin {
           console.log("Clave ingresada:", ClaveSinEncriptar);
           console.log("Clave en BD:", usuario.clave);
     
-          return jwt.sign({ data: usuario.tipoUsuario }, this.PalabraSecreta, { expiresIn: '1h' });
+          return jwt.sign({ idUsuario:usuario.idUsuario, tipoUsuario: usuario.tipoUsuario}, this.PalabraSecreta, { expiresIn: '1h' });
     
       } catch (error) {
           console.error(`Error en autenticación: ${error.message}`);
@@ -39,7 +39,13 @@ class servicioUsuarioLogin {
         async ValidarToken(solicitud) {
             let Resultado;
             try {
+              //Autenticar el token
+              if (!solicitud.headers.authorization) 
+                throw new Error("Token no proporcionado");
+        
               Resultado = await jwt.verify(solicitud.headers.authorization.split(" ")[1], this.PalabraSecreta); 
+              console.log("Token verificado:", Resultado);
+              
             } catch(err) {
               Resultado = err;
             }

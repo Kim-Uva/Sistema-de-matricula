@@ -97,3 +97,24 @@ module.exports.deleteMateria = async (request, response, next) => {
     response.status(500).json({ error: 'Error interno al eliminar la materia' });
   }
 };
+
+//Obtener materia por idPlan
+module.exports.getMateriasByIdPlan = async (request, response, next) => {
+  try {
+    const { idPlan } = request.params;
+    const materia = await prisma.materias.findMany({
+      where: {
+        idPlan: parseInt(idPlan)
+      }
+    });
+
+    if (!materia) {
+      return response.status(404).json({ message: 'No se encontraron materias' });
+    }
+
+    response.json(materia);
+  } catch (error) {
+    console.error('Error al obtener materia por idPlan:', error);
+    response.status(500).json({ error: 'Error interno al obtener la materia' });
+  }
+};

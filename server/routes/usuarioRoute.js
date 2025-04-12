@@ -18,7 +18,11 @@ router.get('/docentes', ServicioUsuarios.getDocentes);
 router.get('/:id', ServicioUsuarios.getUsuarioById);
 //get by docente
 router.get('/docente/:id', ServicioUsuarios.getDocenteById);
+//get by estudiante
+router.get('/estudiante/:id', ServicioUsuarios.getEstudiantebyId);
 //Get by tipoUsuario
 router.get('/tipoUsuario/:tipoUsuario', ServicioUsuarios.getUsuariosByTipo);
+//get Byy correo
+router.get('/correo/:correo', ServicioUsuarios.getUsuarioByCorreo);
 
 module.exports = router;

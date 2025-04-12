@@ -7,6 +7,7 @@ CREATE TABLE `Perfil` (
     `apellido2` VARCHAR(191) NOT NULL,
     `telefono` VARCHAR(191) NOT NULL,
     `correo` VARCHAR(191) NOT NULL,
+    `clave` VARCHAR(191) NULL,
     `estado` ENUM('Activo', 'Inactivo') NULL,
     `tipoUsuario` ENUM('Estudiante', 'Docente', 'Usuario') NOT NULL,
 
@@ -94,7 +95,7 @@ CREATE TABLE `OfertaAcademicaGrupo` (
 CREATE TABLE `HistorialAcademico` (
     `idHistorialAcademico` INTEGER NOT NULL AUTO_INCREMENT,
     `idEstudiante` INTEGER NOT NULL,
-    `idMateria` INTEGER NOT NULL,
+    `idCurso` INTEGER NOT NULL,
     `notaFinal` DOUBLE NOT NULL,
 
     PRIMARY KEY (`idHistorialAcademico`)
@@ -109,6 +110,26 @@ CREATE TABLE `Auditoria` (
     `fecha` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`idAuditoria`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `MatriculaEncabezado` (
+    `idEncabezado` INTEGER NOT NULL AUTO_INCREMENT,
+    `idEstudiante` INTEGER NOT NULL,
+    `fechaMatricula` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `estado` ENUM('Activo', 'Inactivo') NOT NULL,
+
+    PRIMARY KEY (`idEncabezado`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `MatriculaDetalle` (
+    `idMatriculaDetalle` INTEGER NOT NULL AUTO_INCREMENT,
+    `idEncabezado` INTEGER NOT NULL,
+    `idCurso` INTEGER NOT NULL,
+    `estado` ENUM('Activo', 'Inactivo') NOT NULL,
+
+    PRIMARY KEY (`idMatriculaDetalle`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -172,10 +193,22 @@ ALTER TABLE `OfertaAcademicaGrupo` ADD CONSTRAINT `OfertaAcademicaGrupo_idOferta
 ALTER TABLE `OfertaAcademicaGrupo` ADD CONSTRAINT `OfertaAcademicaGrupo_idPlanEstudios_fkey` FOREIGN KEY (`idPlanEstudios`) REFERENCES `PlanEstudios`(`idPlan`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `HistorialAcademico` ADD CONSTRAINT `HistorialAcademico_idCurso_fkey` FOREIGN KEY (`idCurso`) REFERENCES `Curso`(`idCurso`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `HistorialAcademico` ADD CONSTRAINT `HistorialAcademico_idEstudiante_fkey` FOREIGN KEY (`idEstudiante`) REFERENCES `Estudiante`(`idEstudiante`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Auditoria` ADD CONSTRAINT `Auditoria_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Perfil`(`idUsuario`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `MatriculaEncabezado` ADD CONSTRAINT `MatriculaEncabezado_idEstudiante_fkey` FOREIGN KEY (`idEstudiante`) REFERENCES `Estudiante`(`idEstudiante`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `MatriculaDetalle` ADD CONSTRAINT `MatriculaDetalle_idCurso_fkey` FOREIGN KEY (`idCurso`) REFERENCES `Curso`(`idCurso`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `MatriculaDetalle` ADD CONSTRAINT `MatriculaDetalle_idEncabezado_fkey` FOREIGN KEY (`idEncabezado`) REFERENCES `MatriculaEncabezado`(`idEncabezado`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Direccion` ADD CONSTRAINT `Direccion_idPerfil_fkey` FOREIGN KEY (`idPerfil`) REFERENCES `Perfil`(`idUsuario`) ON DELETE RESTRICT ON UPDATE CASCADE;
