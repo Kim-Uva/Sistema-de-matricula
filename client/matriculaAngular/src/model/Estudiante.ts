@@ -6,4 +6,6 @@ export interface Estudiante {
     idPerfil: number;
     perfil: Perfil; 
     historialAcademico: HistorialAcademico[];  
+
+    
   }

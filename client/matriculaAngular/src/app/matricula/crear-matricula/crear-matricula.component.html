@@ -1,0 +1,98 @@
+<p>Fecha: {{fechaHoy}}</p>
+
+<div *ngIf="estudiante">
+    <p>Identificación: {{ estudiante.identificacion }}</p>
+    <p>Nombre: {{ estudiante.nombre }} {{ estudiante.apellido1 }} {{estudiante.apellido2}}</p>
+  </div> 
+
+  <!-- Crear matricula  -->
+    <div class="container-page">
+        <h2>Registra una matrícula</h2>
+
+    <div class="form-group">
+            <!-- Select Periodo -->
+        <label for="">Selecciona un periodo: </label>
+        <select id="periodo" [(ngModel)]="ofertaSelect">
+            <option value="">-- Seleccione --</option>
+            <option *ngFor="let o of ofertas" [value]="o.idOfertaAcademica">
+              {{ o.descripcionPeriodo }}
+            </option>
+          </select>
+          <br>
+          <br>
+          <!-- Plan de estudios -->
+            <label for="">Selecciona un plan de estudios: </label>
+            <select id="plan" [(ngModel)]="planSelect" (change)="obtenerMateriasPorPlan(planSelect!)">
+                <option value="">-- Seleccione --</option>
+                <option *ngFor="let p of plan" [value]="p.idPlan">
+                  {{ p.descripcion }}
+                </option>
+              </select>
+
+              <!-- Materias -->
+              <h5>Materias disponibles</h5>
+              <div class="card-container" *ngIf="materiasPorPlan.length > 0" >
+                <div 
+                  class="card-materia" 
+                  *ngFor="let materia of materiasPorPlan" (click)="obtenerCursosPorMateria(materia.idMateria)"
+                  [class.selected]="materia.idMateria === materiaSelect">
+                  <span *ngIf="tieneCursoSeleccionado(materia.idMateria)" class="check-icon">✔️</span>
+
+                  <h4>{{ materia.descripcion }}</h4>
+
+                </div>
+              </div>
+
+
+                <br>
+                <br>
+                <!-- Curso Disponible -->
+                <div class="card-container" *ngIf="cursosPorMateria.length > 0">
+                    <div *ngFor="let curso of cursosPorMateria" class="curso-card" [class.selected]="esCursoSeleccionado(curso)">
+                      <h3>{{ curso.materia?.descripcion }}</h3>
+                      <p><strong>Docente:</strong> {{ curso.docente?.perfil?.nombre }} {{ curso.docente?.perfil?.apellido1 }}</p>
+                      <p><strong>Aula:</strong> {{ curso.aula }}</p>
+                  
+                      <div class="horarios">
+                        <p><strong>Horarios:</strong></p>
+                        <table class="horario-tabla">
+                          <thead>
+                            <tr>
+                              <th>Día</th>
+                              <th>Inicio</th>
+                              <th>Fin</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let h of curso.horario">
+                              <td>{{ h.diaSemana }}</td>
+                              <td>{{ h.horaInicio }}</td>
+                              <td>{{ h.horaFin }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                  <br>
+                      <!-- Botón para seleccionar o quitar el curso -->
+                      <button (click)="toggleCursoSeleccionado(curso)">
+                        {{ esCursoSeleccionado(curso) ? 'Quitar curso' : 'Seleccionar curso' }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="form-group" *ngIf="cursosSeleccionados.length > 0">
+                    <button class="formalizar-btn" (click)="formalizarMatricula($event)">
+                      Formalizar Matrícula
+                    </button>
+                  </div>
+
+
+                  <div *ngIf="matriculaExitosa" class="modal">
+                    <div class="modal-content">
+                      <h2>Matrícula Formalizada</h2>
+                      <p>¡La matrícula se ha formalizado con éxito! Revisa tu Historial academico</p>
+                      <button (click)="redirigirInicio()">Aceptar</button>
+                    </div>
+                  </div>
+      </div>
+    

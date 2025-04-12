@@ -1,0 +1,149 @@
+/* Estilo General */
+.container-page {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fecha {
+    text-align: right;
+    font-style: italic;
+    color: #555;
+  }
+  
+  .estudiante-info {
+    margin: 20px 0;
+    font-size: 16px;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  h5 {
+    margin-top: 30px;
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .card-materia,
+  .curso-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 320px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .card-materia:hover,
+  .curso-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .card-materia.selected {
+    border: 2px solid #007bff;
+    background-color: #e6f0ff;
+  }
+  
+  .card-materia h4 {
+    font-size: 18px;
+    color: #007bff;
+  }
+  
+  .curso-card h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .form-control:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .horario-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .horario-tabla th,
+  .horario-tabla td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .horario-tabla th {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .horarios p {
+    font-size: 16px;
+    color: #333;
+  }
+  .modal {
+    display: block; /* Muestra el modal */
+    position: fixed;
+    z-index: 1; /* Asegura que esté encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px; /* Tamaño del modal */
+    text-align: center;
+    border-radius: 8px;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }

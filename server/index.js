@@ -25,6 +25,8 @@ const cursoRoute = require("./routes/cursoRoute.js");
 const grupoRoute = require("./routes/ofertaGrupoRoute.js");
 const historialRoute = require("./routes/historialRoute.js");
 const usuarioLogin = require("./routes/loginRoute.js");
+const ofertaAcademica = require("./routes/ofertaAcademicaRoute.js");
+const matriculaRoute = require("./routes/matriculaRoute.js");
 
 // Acceder a la configuracion del archivo .env
 dotEnv.config();
@@ -53,6 +55,8 @@ app.use('/oferta/', ofertaRoute)
 app.use('/curso/', cursoRoute)
 app.use('/grupo/', grupoRoute)
 app.use('/historial/', historialRoute)
+app.use('/ofertaAcademica/', ofertaAcademica)
+app.use('/matricula/', matriculaRoute)
 
 // Servidor
 app.listen(port, () => {

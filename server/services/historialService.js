@@ -12,7 +12,9 @@ module.exports.getHistoriales = async (request, response, next) => {
             perfil: true,
           },
         },
+        curso: true,
       },
+      
     });
 
     if (historial.length === 0) {
@@ -33,7 +35,7 @@ module.exports.getHistoriales = async (request, response, next) => {
 //Crear historial
 module.exports.createHistorial = async (request, response, next) => {
   try {
-    const { idEstudiante, idMateria, historialAcademico, notaFinal } =
+    const { idEstudiante, idCurso, historialAcademico, notaFinal } =
       request.body;
 
     const historial = await prisma.historialAcademico.create({
@@ -43,8 +45,12 @@ module.exports.createHistorial = async (request, response, next) => {
             idEstudiante: idEstudiante,
           },
         },
+        curso: {
+          connect: {
+            idCurso: idCurso,
+          },
+        },
         idHistorialAcademico: historialAcademico,
-        idMateria: idMateria,
         notaFinal: notaFinal,
       },
       include: {
@@ -80,7 +86,11 @@ module.exports.updateHistorial = async (request, response, next) => {
             idEstudiante: idEstudiante,
           },
         },
-        idMateria: idMateria,
+        curso: {
+          connect: {
+            idCurso: idMateria,
+          },
+        },
         notaFinal: notaFinal,
       },
       include: {

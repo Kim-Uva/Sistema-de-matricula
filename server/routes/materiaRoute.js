@@ -12,4 +12,8 @@ router.delete('/:id', ServicioMateria.deleteMateria);
 
 //Obtener materia por id
 router.get('/:id', ServicioMateria.getMateriaById);
+
+//Materia por idplan
+router.get('/plan/:idPlan', ServicioMateria.getMateriasByIdPlan);
+
 module.exports = router;

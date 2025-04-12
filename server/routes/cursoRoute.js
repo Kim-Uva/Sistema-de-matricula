@@ -35,5 +35,7 @@ router.delete('/:id', ServicioCurso.deleteCurso);
 //Get by id
 router.get('/:id', ServicioCurso.getCursoById);
 
+//Get by idMateria
+router.get('/materia/:idMateria', ServicioCurso.getCursoByMateria);
 
 module.exports = router; 

@@ -45,6 +45,7 @@ model Estudiante {
   idPerfil           Int                  @unique
   perfil             Perfil               @relation(fields: [idPerfil], references: [idUsuario])
   historialAcademico HistorialAcademico[]
+  matriculaEncabezado MatriculaEncabezado[]
 }
 
 //Materias: son los nombres de los elementos que componen un plan de estudios
@@ -77,6 +78,8 @@ model Curso {
   materia   Materias  @relation(fields: [idMateria], references: [idMateria])
   docente   Docente   @relation(fields: [idDocente], references: [idDocente])
   horario   Horario[] @relation("HorarioCurso")
+  matricula MatriculaDetalle[]
+  historial HistorialAcademico[]
 }
 
 model Horario {
@@ -110,8 +113,9 @@ model OfertaAcademicaGrupo {
 model HistorialAcademico {
   idHistorialAcademico Int        @id @default(autoincrement())
   idEstudiante         Int
-  idMateria            Int
+  idCurso            Int
   notaFinal            Float
+  curso               Curso     @relation(fields: [idCurso], references: [idCurso])
   estudiante           Estudiante @relation(fields: [idEstudiante], references: [idEstudiante])
 }
 
@@ -124,6 +128,24 @@ model Auditoria {
   tablaAfectada String
   fecha         DateTime @default(now())
   perfil        Perfil   @relation(fields: [idPerfil], references: [idUsuario])
+}
+//MatriculaEncabezado: es el registro de la matricula de un estudiante en un curso
+model MatriculaEncabezado {
+  idEncabezado Int       @id @default(autoincrement())
+  idEstudiante          Int
+  fechaMatricula        DateTime @default(now())
+  estado                Estado
+  estudiante             Estudiante @relation(fields: [idEstudiante], references: [idEstudiante])
+  matriculaDetalle     MatriculaDetalle[]
+}
+//Matricula con varios cursos: es el registro de los cursos en los que un estudiante se ha matriculado
+model MatriculaDetalle {
+  idMatriculaDetalle Int       @id @default(autoincrement())
+  idEncabezado      Int
+  idCurso      Int
+  estado       Estado
+  curso        Curso     @relation(fields: [idCurso], references: [idCurso])
+  matriculaEncabezado MatriculaEncabezado @relation(fields: [idEncabezado], references: [idEncabezado])
 }
 
 //Direcciones
