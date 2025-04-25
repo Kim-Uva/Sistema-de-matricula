@@ -52,6 +52,7 @@ async function main() {
               perfil: {
                 connect: {
                   idUsuario: existePerfil.idUsuario, // Conectar usando el id generado automáticamente
+
                 },
               },
             },

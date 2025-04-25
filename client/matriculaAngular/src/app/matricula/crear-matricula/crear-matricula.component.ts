@@ -9,6 +9,7 @@ import { Materia } from '../../../model/Materias';
 import { Curso } from '../../../model/Curso';
 import { HistorialAcademico } from '../../../model/HistorialAcademico';
 import { response } from 'express';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-crear-matricula',
@@ -256,6 +257,7 @@ export class CrearMatriculaComponent implements OnInit {
           }
 
           this.matriculaExitosa = true;
+          this.generarPDF();
           
         },
         error: (err) => {
@@ -267,6 +269,29 @@ export class CrearMatriculaComponent implements OnInit {
 
   redirigirInicio(): void {
     window.location.href = '/inicio'; 
+  }
+
+  // Método para generar el PDF
+  generarPDF(): void {
+    const doc = new jsPDF();
+    const fechaActual = new Date().toLocaleDateString('es-CR');
+    const nombreEstudiante = this.estudiante?.nombre || 'Estudiante';
+
+    doc.setFontSize(16);
+    doc.text('Matrícula Exitosa', 20, 20);
+    doc.setFontSize(12);
+    doc.text(`Fecha: ${fechaActual}`, 20, 30);
+    doc.text(`Nombre del Estudiante: ${nombreEstudiante}`, 20, 40);
+
+    // Detalles de la matrícula
+    let y = 60;
+    this.cursosSeleccionados.forEach((curso) => {
+      doc.text(`Curso: ${curso.materia?.descripcion}`, 20, y);
+      y += 10;
+    });
+
+    // Guardar el PDF
+    doc.save('Matricula estudiante: ' + nombreEstudiante+'.pdf');
   }
 
 }
